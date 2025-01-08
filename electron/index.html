@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'"
+    />
+    <title>dnd</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Drag and drop</h1>
+    <div>
+      We are using Node.js <span id="node-version"></span>, Chromium
+      <span id="chrome-version"></span>, and Electron
+      <span id="electron-version"></span>.
+    </div>
+
+    <div draggable="true" id="drop">Drop here</div>
+    <div id="filenames">no files.</div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
