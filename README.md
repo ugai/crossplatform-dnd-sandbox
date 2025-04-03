@@ -2,19 +2,19 @@
 
 ## About
 
-Implementing file drag and drop functionality in cross-platform desktop apps is extremely hard.
-This repository is for my personal experimentation with various frameworks.
+Implementing file drag-and-drop functionality in cross-platform desktop applications is extremely hard.
+This repository serves as a personal sandbox for experimenting with various frameworks and approaches.
 
 ## Frameworks
 
-| Status  | Framework      |
-|---------|----------------|
-| Tried   | Avalonia UI    |
-|         | Electron       |
-|         | Iced           |
-| TODO    | MAUI           |
-|         | Tauri          |
-|         | Flutter        |
+| Status          | Framework      |
+|-----------------|----------------|
+| ✅ Implemented | Avalonia UI    |
+| ✅ Implemented | Electron       |
+| ✅ Implemented | Iced           |
+| ✅ Implemented | Tauri          |
+| 📝 TODO        | MAUI           |
+| 📝 TODO        | Flutter        |
 
 ## License
 
