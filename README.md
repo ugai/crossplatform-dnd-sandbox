@@ -7,14 +7,14 @@ This repository serves as a personal sandbox for experimenting with various fram
 
 ## Frameworks
 
-| Status          | Framework      |
-|-----------------|----------------|
-| ✅ Implemented | Avalonia UI    |
-| ✅ Implemented | Electron       |
-| ✅ Implemented | Iced           |
-| ✅ Implemented | Tauri          |
-| 📝 TODO        | MAUI           |
-| 📝 TODO        | Flutter        |
+| Status          | Framework      | Code |
+|-----------------|----------------|------|
+| ✅ Implemented | Avalonia UI    | [dotnet-avalonia/Views/MainWindow.axaml.cs](dotnet-avalonia/Views/MainWindow.axaml.cs) |
+| ✅ Implemented | Electron       | [electron/renderer.js](electron/renderer.js) |
+| ✅ Implemented | Iced           | [rust-iced/src/main.rs](rust-iced/src/main.rs) |
+| ✅ Implemented | Tauri          | [tauri/src/routes/+page.svelte](./tauri/src/routes/+page.svelte) |
+| 📝 TODO        | MAUI           | |
+| 📝 TODO        | Flutter        | |
 
 ## License
 
