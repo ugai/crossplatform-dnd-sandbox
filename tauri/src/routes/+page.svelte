@@ -5,8 +5,11 @@
   import { onDestroy, onMount } from "svelte";
 
   let dropArea: HTMLDivElement | null = $state(null);
-  let dndState: "idle" | "dragOver" | "dropped" = $state("idle");
+  let isDragOver = $state(false);
   let droppedPaths: string[] = $state([]);
+  const dndState: "idle" | "dragOver" | "dropped" = $derived(
+    isDragOver ? "dragOver" : droppedPaths.length > 0 ? "dropped" : "idle"
+  );
 
   let scaleFactor: number;
   const hitTest = (
@@ -25,50 +28,52 @@
   };
 
   const unlistens: UnlistenFn[] = [];
+  let destroyed = false;
+  // Listeners are registered asynchronously, so the component may already be
+  // destroyed when one resolves. Unlisten it right away in that case.
+  const keep = (unlisten: UnlistenFn) => {
+    if (destroyed) unlisten();
+    else unlistens.push(unlisten);
+  };
+
   onMount(async () => {
     const webview = getCurrentWebview();
-    const window = webview.window;
-    let _unlisten: UnlistenFn;
+    const appWindow = webview.window;
 
     // Watch DPI scale factor changes
-    scaleFactor = await window.scaleFactor();
-    _unlisten = await window.onScaleChanged((event) => {
-      scaleFactor = event.payload.scaleFactor;
-    });
-    unlistens.push(_unlisten);
+    scaleFactor = await appWindow.scaleFactor();
+    keep(
+      await appWindow.onScaleChanged((event) => {
+        scaleFactor = event.payload.scaleFactor;
+      })
+    );
 
-    _unlisten = await webview.onDragDropEvent((event) => {
-      if (event.payload.type === "over") {
-        dndState = hitTest(event.payload.position, dropArea)
-          ? "dragOver"
-          : "idle";
-        return;
-      } else if (event.payload.type === "drop") {
-        dndState = hitTest(event.payload.position, dropArea)
-          ? "dropped"
-          : "idle";
-        if (dndState === "dropped") {
-          const paths = event.payload.paths;
-          if (paths && paths.length > 0) {
-            droppedPaths = paths;
+    keep(
+      await webview.onDragDropEvent((event) => {
+        const payload = event.payload;
+        if (payload.type === "enter" || payload.type === "over") {
+          isDragOver = hitTest(payload.position, dropArea);
+          return;
+        }
+        if (payload.type === "drop") {
+          if (hitTest(payload.position, dropArea) && payload.paths.length > 0) {
+            droppedPaths = payload.paths;
           }
         }
-        return;
-      }
-      dndState = "idle";
-    });
-    unlistens.push(_unlisten);
+        isDragOver = false;
+      })
+    );
   });
 
   onDestroy(() => {
+    destroyed = true;
     for (const unlisten of unlistens) {
       unlisten();
     }
   });
 
-  const clearDroppedPathss = () => {
+  const clearDroppedPaths = () => {
     droppedPaths = [];
-    dndState = "idle";
   };
 </script>
 
@@ -83,7 +88,7 @@
   </div>
 
   <div>Status: {dndState}</div>
-  {#if dndState == "dropped"}
+  {#if dndState === "dropped"}
     <div>Files successfully dropped. Thank you! 🤗</div>
   {/if}
 
@@ -93,7 +98,7 @@
         <li>{path}</li>
       {/each}
     </ul>
-    <button onclick={() => clearDroppedPathss()}>Clear</button>
+    <button onclick={clearDroppedPaths}>Clear</button>
   {/if}
 </main>
 
