@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
@@ -11,7 +12,7 @@ namespace dnd.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    [ObservableProperty] private string _path = "";
+    public ObservableCollection<string> Paths { get; } = [];
 
     [RelayCommand]
     private async Task FileDialogRequest()
@@ -21,14 +22,25 @@ public partial class MainWindowViewModel : ViewModelBase
 
         var filesService = App.Current.Services.GetRequiredService<FilesService>();
         var files = await filesService.PickFilesAsync();
-        var paths = string.Join(", ", files.Select(f => f.Path));
-        Path = paths;
+        SetPaths(files);
     }
 
     [RelayCommand]
     private void Drop(IEnumerable<IStorageItem> files)
     {
-        var paths = string.Join(", ", files.Select(f => f.Path));
-        Path = paths;
+        SetPaths(files);
+    }
+
+    // Keep the previous list when nothing was picked or dropped
+    private void SetPaths(IEnumerable<IStorageItem> items)
+    {
+        // IStorageItem.Path is a file:// URI; show the local path when there is one
+        var paths = items.Select(f => f.TryGetLocalPath() ?? f.Path.ToString()).ToList();
+        if (paths.Count == 0)
+            return;
+
+        Paths.Clear();
+        foreach (var path in paths)
+            Paths.Add(path);
     }
 }
