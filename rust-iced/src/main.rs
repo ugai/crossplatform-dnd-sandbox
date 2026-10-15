@@ -1,4 +1,4 @@
-use iced::widget::{button, column, container, row, text};
+use iced::widget::{button, column, container, row, scrollable, text};
 use iced::{event, mouse, window, Border, Element, Event, Point, Theme};
 use iced::{Size, Subscription, Task};
 use rfd::AsyncFileDialog;
@@ -64,7 +64,13 @@ fn view(state: &State) -> Element<'_, Message> {
 
     container(
         column![
-            row!["File: ", text(paths)].spacing(10),
+            // The list takes the remaining height and scrolls, so the controls stay visible
+            row![
+                "File: ",
+                scrollable(text(paths)).width(iced::Fill).height(iced::Fill)
+            ]
+            .spacing(10)
+            .height(iced::Fill),
             button("Open ...").on_press(Message::FileDialogRequest),
             row![
                 "Mouse position: ",
