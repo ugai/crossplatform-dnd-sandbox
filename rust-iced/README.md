@@ -1,0 +1,5 @@
+# Iced
+
+```sh
+cargo run
+```
