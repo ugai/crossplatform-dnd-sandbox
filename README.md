@@ -16,6 +16,10 @@ This repository serves as a personal sandbox for experimenting with various fram
 | 📝 TODO        | MAUI           | |
 | 📝 TODO        | Flutter        | |
 
+## Screenshot
+
+![Tauri](ss_tauri.png)
+
 ## License
 
 The Unlicense.
