@@ -1,0 +1,41 @@
+name: Electron
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "electron/**"
+      - ".github/workflows/electron.yml"
+  pull_request:
+    paths:
+      - "electron/**"
+      - ".github/workflows/electron.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: electron
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: electron/package-lock.json
+      # There is no build step; install deps and check the scripts parse
+      - run: npm ci
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
+      # node --check only checks its first argument, so check each file
+      - run: for f in main.js preload.js renderer.js; do node --check "$f"; done
+        shell: bash
