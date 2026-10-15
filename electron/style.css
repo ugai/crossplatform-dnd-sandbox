@@ -4,3 +4,7 @@
   padding: 5px;
   display: inline-block;
 }
+
+#drop.drag-over {
+  border-color: #007bff;
+}

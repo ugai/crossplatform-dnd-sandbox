@@ -27,13 +27,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+      # Electron runs the scripts on Node, so check them with Node
       - uses: actions/setup-node@v7
         with:
           node-version: lts/*
-          cache: npm
-          cache-dependency-path: electron/package-lock.json
-      # There is no build step; install deps and check the scripts parse
-      - run: npm ci
+      # There is no build step; install deps and check the scripts parse.
+      # Bun migrates package-lock.json when bun.lock does not exist yet.
+      - run: bun install --frozen-lockfile
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
       # node --check only checks its first argument, so check each file

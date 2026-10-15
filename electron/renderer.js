@@ -1,24 +1,31 @@
-document.addEventListener('drop', (e) => {
+const dropArea = document.getElementById('drop');
+const filenamesElem = document.getElementById('filenames');
+
+const hasFiles = (e) => e.dataTransfer.types.includes('Files');
+
+// Prevent Chromium from navigating to a file dropped outside the drop area
+document.addEventListener('dragover', (e) => e.preventDefault());
+document.addEventListener('drop', (e) => e.preventDefault());
+
+dropArea.addEventListener('dragover', (e) => {
   e.preventDefault();
-  e.stopPropagation();
+  if (hasFiles(e)) dropArea.classList.add('drag-over');
 });
 
-document.getElementById('drop').addEventListener('drop', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-
-  let s = "";
-  for (const f of e.dataTransfer.files) {
-    p = electron.getFilePath(f)
-    s += p + "\n"
-    console.log('File(s) you dragged here: ', p)
-  }
-
-  const filenamesElem = document.getElementById('filenames')
-  filenamesElem.innerText = s
+dropArea.addEventListener('dragleave', () => {
+  dropArea.classList.remove('drag-over');
 });
 
-document.addEventListener('dragover', (e) => {
+dropArea.addEventListener('drop', (e) => {
   e.preventDefault();
-  e.stopPropagation();
+  dropArea.classList.remove('drag-over');
+
+  // getFilePath returns "" for items that are not on the file system
+  const paths = [...e.dataTransfer.files]
+    .map((f) => electron.getFilePath(f))
+    .filter((p) => p !== '');
+  if (paths.length === 0) return;
+
+  console.log('File(s) you dragged here: ', paths);
+  filenamesElem.innerText = paths.join('\n');
 });
