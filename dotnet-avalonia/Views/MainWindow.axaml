@@ -22,6 +22,9 @@
             <Setter Property="StrokeThickness" Value="8" />
             <Setter Property="Fill" Value="SlateGray" />
         </Style>
+        <Style Selector="Rectangle.dnd-area.drag-over">
+            <Setter Property="Stroke" Value="DodgerBlue" />
+        </Style>
     </Window.Styles>
 
     <Grid RowDefinitions="auto,auto,auto"
@@ -39,7 +42,8 @@
                 Grid.Column="0" Grid.ColumnSpan="2"
                 Content="Open..."
                 Command="{Binding FileDialogRequestCommand}" />
-        <Rectangle Grid.Row="2"
+        <Rectangle x:Name="DropArea"
+                   Grid.Row="2"
                    Grid.Column="0" Grid.ColumnSpan="2"
                    Classes="dnd-area"
                    VerticalAlignment="Center"

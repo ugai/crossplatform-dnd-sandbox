@@ -21,14 +21,16 @@ public partial class MainWindowViewModel : ViewModelBase
 
         var filesService = App.Current.Services.GetRequiredService<FilesService>();
         var files = await filesService.PickFilesAsync();
-        var paths = string.Join(", ", files.Select(f => f.Path));
-        Path = paths;
+        Path = FormatPaths(files);
     }
 
     [RelayCommand]
     private void Drop(IEnumerable<IStorageItem> files)
     {
-        var paths = string.Join(", ", files.Select(f => f.Path));
-        Path = paths;
+        Path = FormatPaths(files);
     }
+
+    // IStorageItem.Path is a file:// URI; show the local path when there is one
+    private static string FormatPaths(IEnumerable<IStorageItem> items) =>
+        string.Join(", ", items.Select(f => f.TryGetLocalPath() ?? f.Path.ToString()));
 }
