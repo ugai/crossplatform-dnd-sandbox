@@ -1,6 +1,6 @@
 # Tauri
 
 ```sh
-deno install
-deno task tauri dev
+bun install
+bun run tauri dev
 ```
