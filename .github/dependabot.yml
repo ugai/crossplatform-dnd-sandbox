@@ -1,0 +1,51 @@
+version: 2
+
+# One grouped PR per folder and ecosystem per week, to keep the noise down
+updates:
+  - package-ecosystem: bun
+    directory: /electron
+    schedule:
+      interval: weekly
+    groups:
+      electron:
+        patterns: ["*"]
+
+  - package-ecosystem: bun
+    directory: /tauri
+    schedule:
+      interval: weekly
+    groups:
+      tauri-frontend:
+        patterns: ["*"]
+
+  - package-ecosystem: cargo
+    directory: /tauri/src-tauri
+    schedule:
+      interval: weekly
+    groups:
+      tauri-backend:
+        patterns: ["*"]
+
+  - package-ecosystem: cargo
+    directory: /rust-iced
+    schedule:
+      interval: weekly
+    groups:
+      iced:
+        patterns: ["*"]
+
+  - package-ecosystem: nuget
+    directory: /dotnet-avalonia
+    schedule:
+      interval: weekly
+    groups:
+      avalonia:
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns: ["*"]
