@@ -36,4 +36,6 @@ jobs:
       - run: npm ci
         env:
           ELECTRON_SKIP_BINARY_DOWNLOAD: "1"
-      - run: node --check main.js preload.js renderer.js
+      # node --check only checks its first argument, so check each file
+      - run: for f in main.js preload.js renderer.js; do node --check "$f"; done
+        shell: bash
