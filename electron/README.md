@@ -1,6 +1,6 @@
 # Electron
 
 ```sh
-npm install
-npm start
+bun install
+bun run start
 ```
