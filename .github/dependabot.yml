@@ -24,6 +24,10 @@ updates:
       tauri-frontend-security:
         applies-to: security-updates
         patterns: ["*"]
+    ignore:
+      # SvelteKit 3 and svelte-check support TypeScript up to 6; TypeScript 7 (native) lacks the JS API they use
+      - dependency-name: typescript
+        versions: [">=7"]
 
   - package-ecosystem: cargo
     directory: /tauri/src-tauri
