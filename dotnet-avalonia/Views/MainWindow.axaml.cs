@@ -18,7 +18,7 @@ public partial class MainWindow : Window
 
     private void DragOver(object? sender, DragEventArgs e)
     {
-        var hasFiles = e.Data.Contains(DataFormats.Files);
+        var hasFiles = e.DataTransfer.Contains(DataFormat.File);
         e.DragEffects = hasFiles ? DragDropEffects.Copy : DragDropEffects.None;
         SetDragOver(hasFiles);
     }
@@ -31,7 +31,7 @@ public partial class MainWindow : Window
     private void Drop(object? sender, DragEventArgs e)
     {
         SetDragOver(false);
-        var files = e.Data.GetFiles();
+        var files = e.DataTransfer.TryGetFiles();
         if (files != null && DataContext is MainWindowViewModel vm)
             vm.DropCommand.Execute(files);
     }
