@@ -1,6 +1,7 @@
 version: 2
 
-# One grouped PR per folder and ecosystem per week, to keep the noise down
+# One grouped PR per folder and ecosystem per week, to keep the noise down.
+# Security updates are grouped separately, since they arrive outside the schedule.
 updates:
   - package-ecosystem: bun
     directory: /electron
@@ -8,6 +9,9 @@ updates:
       interval: weekly
     groups:
       electron:
+        patterns: ["*"]
+      electron-security:
+        applies-to: security-updates
         patterns: ["*"]
 
   - package-ecosystem: bun
@@ -17,6 +21,9 @@ updates:
     groups:
       tauri-frontend:
         patterns: ["*"]
+      tauri-frontend-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: cargo
     directory: /tauri/src-tauri
@@ -24,6 +31,9 @@ updates:
       interval: weekly
     groups:
       tauri-backend:
+        patterns: ["*"]
+      tauri-backend-security:
+        applies-to: security-updates
         patterns: ["*"]
 
   - package-ecosystem: cargo
@@ -33,6 +43,9 @@ updates:
     groups:
       iced:
         patterns: ["*"]
+      iced-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: nuget
     directory: /dotnet-avalonia
@@ -41,6 +54,9 @@ updates:
     groups:
       avalonia:
         patterns: ["*"]
+      avalonia-security:
+        applies-to: security-updates
+        patterns: ["*"]
 
   - package-ecosystem: github-actions
     directory: /
@@ -48,4 +64,7 @@ updates:
       interval: weekly
     groups:
       github-actions:
+        patterns: ["*"]
+      github-actions-security:
+        applies-to: security-updates
         patterns: ["*"]
