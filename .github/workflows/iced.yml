@@ -31,9 +31,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v7
-      # rfd uses GTK 3 for its file dialog on Linux
-      - if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev
+      # No apt packages: rfd uses the XDG portal (libdbus loaded at runtime), not GTK,
+      # and winit/softbuffer load X11 and Wayland with dlopen
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
         with:

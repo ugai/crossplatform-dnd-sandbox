@@ -5,7 +5,8 @@ use rfd::AsyncFileDialog;
 use std::path::PathBuf;
 
 pub fn main() -> iced::Result {
-    iced::application("Drag and drop", update, view)
+    iced::application(State::default, update, view)
+        .title("Drag and drop")
         .window_size(Size::new(600.0, 200.0))
         .subscription(subscription)
         .run()
